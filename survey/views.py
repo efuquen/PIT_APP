@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
 from django.urls import reverse
+from ipware import get_client_ip
 
 # import the different classes
 from .models import Observation_Individual, Observation
@@ -54,7 +55,12 @@ def general_observation(request):
     if request.method == "POST":
         form = Observation_Form(request.POST)
         if form.is_valid():
+            client_ip, is_routable = get_client_ip(request)
             obs = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
+            if client_ip is None:
+                print(f'Found ip {client_ip} with is_routable of {is_routable}')
+            else:
+                print('Client ip not found')
 
             # TO DO: Need to add the obs_user field here with account management BEFORE saving
             # May also need to add "obs_householdnum"
