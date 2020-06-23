@@ -58,9 +58,9 @@ def general_observation(request):
             client_ip, is_routable = get_client_ip(request)
             obs = form.save()  # Can add commit=False and save alter if need to add time/author/etc.
             if client_ip is None:
-                print(f'Found ip {client_ip} with is_routable of {is_routable}')
-            else:
                 print('Client ip not found')
+            else:
+                print(f'Found ip {client_ip} with is_routable of {is_routable}')
 
             # TO DO: Need to add the obs_user field here with account management BEFORE saving
             # May also need to add "obs_householdnum"
